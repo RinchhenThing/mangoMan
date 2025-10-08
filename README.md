@@ -1,6 +1,3 @@
-
-
-````markdown
 # 🥭 Mangoman
 
 > A lightweight Linux-centric learning project inspired by [appleboy/ssh-action](https://github.com/appleboy/ssh-action).  
@@ -46,7 +43,7 @@ With Mangoman, users can:
    ```bash
    git clone https://github.com/your-username/mangoMan.git
    cd mangoMan
-````
+   ```
 
 2. **Run Setup**
 
@@ -55,11 +52,10 @@ With Mangoman, users can:
    ```
 
    This script will:
-
-   * Install required dependencies.
-   * Create necessary directories and configuration files.
-   * Prompt you for SSH credentials.
-   * Allow you to specify initial commands for execution.
+   - Install required dependencies.
+   - Create necessary directories and configuration files.
+   - Prompt you for SSH credentials.
+   - Allow you to specify initial commands for execution.
 
 3. **Reload Your Shell**
 
@@ -68,7 +64,6 @@ With Mangoman, users can:
    ```bash
    source ~/.bashrc
    ```
-
    *(or `source ~/.zshrc`, depending on your shell)*
 
 4. **Start Mangoman**
@@ -109,7 +104,7 @@ If you want to add or modify commands later, you have two options:
 
 ## 🔑 SSH Key Setup
 
-Mangoman relies on your SSH private key for authentication.
+Mangoman relies on your SSH private key for authentication.  
 If you haven’t set up SSH keys yet:
 
 1. Generate a new key pair **on your server**:
@@ -124,18 +119,18 @@ If you haven’t set up SSH keys yet:
 
 ## 📚 User’s Manual Summary
 
-1. Clone this repository.
-2. Run `bash setup.sh`.
-3. Reload your shell (`source ~/.bashrc`).
-4. Type `mango` to start your SSH session.
-5. Modify commands as needed via `custom_commands.sh` or directly in the text file.
+1. Clone this repository.  
+2. Run `bash setup.sh`.  
+3. Reload your shell (`source ~/.bashrc`).  
+4. Type `mango` to start your SSH session.  
+5. Modify commands as needed via `custom_commands.sh` or directly in the text file.  
 
 ---
 
 ## ⚠️ Disclaimer
 
-This project is for **learning and educational purposes only**.
-Use it responsibly and **never share your private SSH keys**.
+This project is for **learning and educational purposes only**.  
+Use it responsibly and **never share your private SSH keys**.  
 Mangoman is not meant for production use or handling sensitive environments.
 
 ---
@@ -143,32 +138,27 @@ Mangoman is not meant for production use or handling sensitive environments.
 ## 🧪 Purpose
 
 This project was created as a **personal exploration** to better understand:
-
-* SSH automation with Python.
-* Script-based environment setup using Bash.
-* The foundational concept behind remote command execution in GitHub Actions.
+- SSH automation with Python.
+- Script-based environment setup using Bash.
+- The foundational concept behind remote command execution in GitHub Actions.
 
 ---
 
 ## 🧑‍💻 Author
 
-**Rinchhen Thing**
+**Rinchhen Thing**  
 📦 GitHub: [@RinchhenThing](https://github.com/RinchhenThing)
 
 ---
 
 ## 📄 License
 
-This project is released under the **MIT License**.
+This project is released under the **MIT License**.  
 See the [LICENSE](./LICENSE) file for more details.
 
 ---
 
 ## 🌟 Acknowledgments
 
-* Inspired by [appleboy/ssh-action](https://github.com/appleboy/ssh-action)
-* Built as part of a personal learning journey in **Python scripting** and **automation**
-
-```
-
-
+- Inspired by [appleboy/ssh-action](https://github.com/appleboy/ssh-action)  
+- Built as part of a personal learning journey in **Python scripting** and **automation**
