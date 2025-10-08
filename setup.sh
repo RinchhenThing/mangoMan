@@ -6,14 +6,14 @@ echo "Setting up environment for SSH Server project..."
 # --- Step 1: Install dependencies ---
 echo "Installing required packages..."
 sudo apt update -y
-sudo apt install -y bash openssh-client python3 python3-venv
+sudo apt install -y bash openssh-client python3 python3-venv python3-pip
 
 # --- Step 2: Navigate to script directory ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # --- Step 3: Fix permissions ---
-echo "🔧 Setting proper file permissions..."
+echo "Setting proper file permissions..."
 [[ -f key ]] && chmod 600 key
 chmod +x mangoboy.sh run-remote.sh 2>/dev/null || true
 
@@ -24,6 +24,7 @@ if [[ ! -d "venv" ]]; then
 fi
 
 echo "Activating virtual environment..."
+# shellcheck source=/dev/null
 source venv/bin/activate
 
 # --- Step 5: Install Paramiko if missing ---
@@ -35,12 +36,13 @@ else
   echo "Paramiko already installed."
 fi
 
-# --- Step 6: Run setup scripts ---
+# --- Step 6: Run setup scripts (if present) ---
 for script in bashes/ask_credentials.sh bashes/custom_commands.sh bashes/write_key.sh; do
-  if [[ "$script" ]]; then
+  if [[ -f "$script" ]]; then
+    echo "Running $script ..."
     bash "$script"
   else
-    echo "kipping missing script: $script"
+    echo "Skipping missing script: $script"
   fi
 done
 
@@ -53,7 +55,7 @@ mkdir -p "$HOME/bin"
 
 if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$HOME/.profile" 2>/dev/null; then
   echo "Adding ~/bin to PATH in ~/.profile ..."
-  printf '\n# add user bin to PATH\nexport PATH="$HOME/bin:$PATH"\n' >> "$HOME/.profile"
+  printf '\n# Add user bin to PATH\nexport PATH="$HOME/bin:$PATH"\n' >> "$HOME/.profile"
 fi
 
 export PATH="$HOME/bin:$PATH"
@@ -78,12 +80,11 @@ EOF
 chmod +x "$HOME/bin/mango"
 hash -r
 
-echo "'mango' command installed!"
-echo "You can now type 'mango' in any terminal to run set.sh"
+echo "'mango' command installed successfully!"
+echo "You can now type 'mango' in any terminal to run the main script."
 echo "   (Restart your terminal if not recognized yet.)"
-
 
 echo
 echo "Setup complete!"
-echo "o start, run: ./mangoboy.sh"
+echo "To start manually, run: ./mangoboy.sh"
 echo "To activate the Python environment later: source venv/bin/activate"
