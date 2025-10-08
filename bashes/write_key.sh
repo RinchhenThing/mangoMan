@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-file_path=/home/yat0/my_stuff/mangoMan/secrets_and_variables/key
+file_path=../secrets_and_variables/key
 
 echo -e "\n"
 echo "Paste your private SSH key. When finished press CTRL+D"

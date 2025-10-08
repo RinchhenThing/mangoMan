@@ -2,7 +2,7 @@
 
 #Ask the user append/write
 
-file_path=/home/yat0/my_stuff/mangoMan/secrets_and_variables/commands.txt
+file_path=../secrets_and_variables/commands.txt
 echo -e "\n"
 read -p "Do you want to write (w) or append (a) the commands?" choice
 echo "Please enter the commands."
