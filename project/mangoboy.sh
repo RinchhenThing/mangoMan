@@ -2,9 +2,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-KEY_PATH="/home/yat0/my_stuff/mangoMan/secrets_and_variables/key"
-CRED_FILE="/home/yat0/my_stuff/mangoMan/secrets_and_variables/credentials.txt"
-CMD_FILE="/home/yat0/my_stuff/mangoMan/secrets_and_variables/commands.txt"
+KEY_PATH="../secrets_and_variables/key"
+CRED_FILE="../secrets_and_variables/credentials.txt"
+CMD_FILE="../secrets_and_variables/commands.txt"
 
 # --- Read credentials ---
 if [[ ! -f "$CRED_FILE" ]]; then
