@@ -62,33 +62,29 @@ for rcfile in "$HOME/.profile" "$HOME/.bashrc"; do
   fi
 done
 
-# Apply it immediately for the current session
+# Apply it immediately for this session
 export PATH="$HOME/bin:$PATH"
 
-# Step 7.2: Create wrapper script
-cat > "$HOME/bin/mango" <<'EOF'
-#!/usr/bin/env bash
-set -euo pipefail
-
-PROJECT_DIR_PLACEHOLDER="__PROJECT_DIR__"
-PROJECT_DIR="$PROJECT_DIR_PLACEHOLDER"
-SCRIPT="$PROJECT_DIR/mangoboy.sh"
-
-if [[ ! -f "$SCRIPT" ]]; then
-  echo "ERROR: $SCRIPT not found in $PROJECT_DIR" >&2
+# Step 7.2: Detect where mangoboy.sh actually is
+if [[ -f "$SCRIPT_DIR/project/mangoboy.sh" ]]; then
+  MAIN_SCRIPT_PATH="$SCRIPT_DIR/project/mangoboy.sh"
+elif [[ -f "$SCRIPT_DIR/mangoboy.sh" ]]; then
+  MAIN_SCRIPT_PATH="$SCRIPT_DIR/mangoboy.sh"
+else
+  echo "ERROR: Could not locate mangoboy.sh in project directory." >&2
   exit 1
 fi
 
-cd "$PROJECT_DIR"
-exec bash "$SCRIPT" "$@"
+# Step 7.3: Create the mango launcher
+cat > "$HOME/bin/mango" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+SCRIPT_PATH="$MAIN_SCRIPT_PATH"
+cd "\$(dirname "\$SCRIPT_PATH")"
+exec bash "\$SCRIPT_PATH" "\$@"
 EOF
 
-# Replace placeholder with actual project path
-PROJECT_PATH="$(pwd)"
-sed -i "s|__PROJECT_DIR__|$PROJECT_PATH|g" "$HOME/bin/mango"
 chmod +x "$HOME/bin/mango"
-
-# Refresh the shell command cache
 hash -r
 
 echo "'mango' command installed successfully!"
