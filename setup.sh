@@ -46,6 +46,7 @@ for script in bashes/ask_credentials.sh bashes/custom_commands.sh bashes/write_k
   fi
 done
 
+
 # --- Step 7: Create global 'mango' command ---
 echo
 echo "Installing 'mango' command for quick access..."
@@ -53,28 +54,24 @@ echo "Installing 'mango' command for quick access..."
 # Step 7.1: Create ~/bin if missing and ensure it's in PATH
 mkdir -p "$HOME/bin"
 
-if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$HOME/.profile" 2>/dev/null; then
-  echo "Adding ~/bin to PATH in ~/.profile ..."
-  printf '\n# Add user bin to PATH\nexport PATH="$HOME/bin:$PATH"\n' >> "$HOME/.profile"
-fi
+# Ensure ~/bin is in PATH in .profile and .bashrc
+for rcfile in "$HOME/.profile" "$HOME/.bashrc"; do
+  if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$rcfile" 2>/dev/null; then
+    echo "Adding ~/bin to PATH in $rcfile ..."
+    printf '\n# Add user bin to PATH\nexport PATH="$HOME/bin:$PATH"\n' >> "$rcfile"
+  fi
+done
 
+# Apply it immediately for the current session
 export PATH="$HOME/bin:$PATH"
-
 
 # Step 7.2: Create wrapper script
 cat > "$HOME/bin/mango" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-# --- Dynamically locate the project directory ---
-# This script assumes that the setup.sh file was run from within the project folder.
-# So we store the real path of this script during setup and reuse it here.
-
-PROJECT_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
-# The above line resolves to ~/bin, so we fix it to the actual project dir stored during setup.
 PROJECT_DIR_PLACEHOLDER="__PROJECT_DIR__"
 PROJECT_DIR="$PROJECT_DIR_PLACEHOLDER"
-
 SCRIPT="$PROJECT_DIR/mangoboy.sh"
 
 if [[ ! -f "$SCRIPT" ]]; then
@@ -86,17 +83,17 @@ cd "$PROJECT_DIR"
 exec bash "$SCRIPT" "$@"
 EOF
 
-# Replace placeholder with the actual project path
+# Replace placeholder with actual project path
 PROJECT_PATH="$(pwd)"
 sed -i "s|__PROJECT_DIR__|$PROJECT_PATH|g" "$HOME/bin/mango"
-
 chmod +x "$HOME/bin/mango"
-hash -r
 
+# Refresh the shell command cache
+hash -r
 
 echo "'mango' command installed successfully!"
 echo "You can now type 'mango' in any terminal to run the main script."
-echo "   (Restart your terminal if not recognized yet.)"
+echo "   (No restart needed!)"
 
 echo
 echo "Setup complete!"
