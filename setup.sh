@@ -44,6 +44,45 @@ for script in bashes/ask_credentials.sh bashes/custom_commands.sh bashes/write_k
   fi
 done
 
+# --- Step 7: Create global 'mango' command ---
+echo
+echo "Installing 'mango' command for quick access..."
+
+# Step 7.1: Create ~/bin if missing and ensure it's in PATH
+mkdir -p "$HOME/bin"
+
+if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$HOME/.profile" 2>/dev/null; then
+  echo "Adding ~/bin to PATH in ~/.profile ..."
+  printf '\n# add user bin to PATH\nexport PATH="$HOME/bin:$PATH"\n' >> "$HOME/.profile"
+fi
+
+export PATH="$HOME/bin:$PATH"
+
+# Step 7.2: Create wrapper script
+cat > "$HOME/bin/mango" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_DIR="$HOME/my_stuff/mangoMan/project"
+SCRIPT="$PROJECT_DIR/mangoboy.sh"
+
+if [[ ! -f "$SCRIPT" ]]; then
+  echo "ERROR: $SCRIPT not found." >&2
+  exit 1
+fi
+
+cd "$PROJECT_DIR"
+exec bash "$SCRIPT" "$@"
+EOF
+
+chmod +x "$HOME/bin/mango"
+hash -r
+
+echo "'mango' command installed!"
+echo "You can now type 'mango' in any terminal to run set.sh"
+echo "   (Restart your terminal if not recognized yet.)"
+
+
 echo
 echo "Setup complete!"
 echo "o start, run: ./mangoboy.sh"
